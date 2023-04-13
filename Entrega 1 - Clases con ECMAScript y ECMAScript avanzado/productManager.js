@@ -65,4 +65,3 @@ productManager.getProducts();
 productManager.getProductById(0);
 productManager.getProductById(1);
 productManager.getProductById(2);
-productManager.getProductById(3);
