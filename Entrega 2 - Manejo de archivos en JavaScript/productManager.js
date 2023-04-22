@@ -188,7 +188,7 @@ const test = async () => {
         await products.updateProduct(1, {title: "I changed the title", description: "I changed the description", test: "This is a test"});
         await products.updateProduct(0, {title: "I changed the title", description: "I changed the description", code: "abc127" });
         await products.updateProduct(2, {id: 1});
-       /** await products.deleteProduct(3);
+        await products.deleteProduct(3);
         console.log(await products.getProducts());
         await products.deleteProduct(1);
         await products.deleteProduct(4);
@@ -196,7 +196,7 @@ const test = async () => {
         await products.deleteProduct(2);
         await products.deleteProduct(0);
         console.log(await products.getProducts());
-        await products.deleteProduct(2); */
+        await products.deleteProduct(2);
 
 	} catch (err) {
 		console.log('\nError: Test failed\n');
