@@ -93,6 +93,7 @@ class ProductManager {
             const existingProducts = await this.getProducts();
 
             const existingProductId = existingProducts.findIndex(existingProduct => existingProduct.id === id);
+            console.log(existingProductId);
 
             if (existingProductId === -1) {
                 console.log("\nError: Not found\n");
@@ -101,14 +102,21 @@ class ProductManager {
 
             const product = existingProducts[existingProductId];
             const existingProductCode = existingProducts.findIndex(existingProduct => existingProduct.code === objectModifier.code);
+            let validator = true;
             Object.keys(objectModifier).forEach(key=> {
-                if ((key !== "code" || existingProductCode === -1) &&  Object.hasOwn(product, key) && key !== "id") {
-                    product[key] = objectModifier[key];
-                } else {
-                    console.log("\nError: can't update object property, make sure the property exists, you are not trying to modify the product code with an existing one for another product or you are not trying to modify the object's ID\n");
-                    return;
+                if (!((key !== "code" || existingProductCode === -1) &&  Object.hasOwn(product, key) && key !== "id")) {
+                    validator = false;
                 }
-            })
+            });
+            if (validator) {
+                Object.keys(objectModifier).forEach(key=> {
+                    product[key] = objectModifier[key];
+                });
+            } else {
+                console.log("\nError: can't update object property, make sure the property exists, you are not trying to modify the product code with an existing one for another product or you are not trying to modify the object's ID\n");
+                return;
+            }
+            
             
             await fs.promises.writeFile(
 				this.path,
@@ -173,13 +181,14 @@ const test = async () => {
         await products.getProductById(8);
         await products.getProductById(10);
         await products.getProductById(12);
+        await products.updateProduct(5, {title: "I changed the title"});
         await products.updateProduct(4, {title: "I changed the title"});
         await products.updateProduct(3, {description: "I changed the description"});
         console.log(await products.getProducts());
-        await products.updateProduct(1, {title: "I changed the title", description: "I changed the description"});
+        await products.updateProduct(1, {title: "I changed the title", description: "I changed the description", test: "This is a test"});
         await products.updateProduct(0, {title: "I changed the title", description: "I changed the description", code: "abc127" });
         await products.updateProduct(2, {id: 1});
-        await products.deleteProduct(3);
+       /** await products.deleteProduct(3);
         console.log(await products.getProducts());
         await products.deleteProduct(1);
         await products.deleteProduct(4);
@@ -187,12 +196,11 @@ const test = async () => {
         await products.deleteProduct(2);
         await products.deleteProduct(0);
         console.log(await products.getProducts());
-        await products.deleteProduct(2);
+        await products.deleteProduct(2); */
 
 	} catch (err) {
 		console.log('\nError: Test failed\n');
 	}
 };
 
-// Ejecuto el test
-test();
+test()
