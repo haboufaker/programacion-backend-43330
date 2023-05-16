@@ -76,9 +76,11 @@ io.on('connection', async (socket) => {
 			} else {
 				res.status(201).send(console.log("Product added"))
 			}
+			let products = await productsController.getProducts();
 			io.emit('products', products);
 		} catch (err) {
 			res.status(500).send(console.log("Internal server error"));
+			let products = await productsController.getProducts();
 			io.emit('products', products);
 		}
 	});
@@ -93,9 +95,11 @@ io.on('connection', async (socket) => {
 			} else {
 				res.status(201).send(console.log("Product deleted"))
 			}
+			let products = await productsController.getProducts();
 			io.emit('products', products);
 		} catch (err) {
 			res.status(500).send(console.log("Internal server error"));
+			let products = await productsController.getProducts();
 			io.emit('products', products);
 		}
 	});
