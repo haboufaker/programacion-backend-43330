@@ -16,11 +16,11 @@ function deleteProduct() {
 	socket.emit('delete-product', id);
 }
 
-async function render(data) {
+function render(data) {
 	// Genero el html
 	const html = document.getElementById('productsContainer');
 	html.innerHTML = '';
-	await data.forEach(element => {
+	data.forEach(element => {
 			const newDiv = document.createElement('div');
 			newDiv.classList.add('product')
 			newDiv.innerHTML = `
