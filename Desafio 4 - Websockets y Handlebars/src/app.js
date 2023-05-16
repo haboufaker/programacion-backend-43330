@@ -49,9 +49,9 @@ io.on('connection', (socket) => {
 	// Listening to messages sent by client and sharing them
 	socket.on('new-product', (product) => {
 		console.log(product);
-		//let newProduct = productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
+		let newProduct = productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
 		// Agrego el mensaje al array de mensajes
-		products.push(product);
+		products.push(newProduct);
 		// Propago el evento a todos los clientes conectados
 		io.emit('new-product', products);
 	});

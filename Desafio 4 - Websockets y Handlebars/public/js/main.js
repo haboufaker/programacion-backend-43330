@@ -38,15 +38,15 @@ async function render(data) {
 }
 
 // Event listener
-io.on('products', (data) => {
+socket.on('products', (data) => {
 	render(data);
 });
 
-io.on('new-product', (data) => {
+socket.on('new-product', (data) => {
 	render(data);
 });
 
-io.on('delete-product', (data) => {
+socket.on('delete-product', (data) => {
 	render(data);
 });
 
