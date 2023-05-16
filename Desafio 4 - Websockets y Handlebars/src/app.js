@@ -51,7 +51,7 @@ io.on('connection', async (socket) => {
 		productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
 		let products = await productsController.getProducts();
 		// Propago el evento a todos los clientes conectados
-		io.emit('products', products);
+		io.sockets.emit('products', products);
 	});
 
 	socket.on('delete-product', async (id) => {
@@ -60,6 +60,44 @@ io.on('connection', async (socket) => {
 		productsController.deleteProduct(productId)
 		let products = await productsController.getProducts();
 		// Propago el evento a todos los clientes conectados
-		io.emit('products', products);
+		io.sockets.emit('products', products);
+		console.log('product deleted!');
 	});
+
+	app.post('/realtimeproducts', async (req, res) => {
+		try {
+			let product = req.body
+	
+			let newProduct = await productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
+			if (newProduct === 400) {
+				res.status(400).send(console.log( "Bad request"))
+			} else if (newProduct === 409) {
+				res.status(409).send(console.log( "The product code is already in the database; if you are trying to add a new product, please choose a different code."))
+			} else {
+				res.status(201).send(console.log("Product added"))
+			}
+			io.emit('products', products);
+		} catch (err) {
+			res.status(500).send(console.log("Internal server error"));
+			io.emit('products', products);
+		}
+	});
+
+	app.delete('/realtimeproducts/:pid', async (req, res) => {
+		try {
+			let id = Math.round(req.params.pid)
+			let existingProduct = await productsController.deleteProduct(id)
+	
+			if (existingProduct === -1) {
+				res.status(404).send(console.log("Not found"))
+			} else {
+				res.status(201).send(console.log("Product deleted"))
+			}
+			io.emit('products', products);
+		} catch (err) {
+			res.status(500).send(console.log("Internal server error"));
+			io.emit('products', products);
+		}
+	});
+
 });

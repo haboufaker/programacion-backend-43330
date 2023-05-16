@@ -1,7 +1,7 @@
 // Socket init
 const socket = io();
 
-function sendProduct() {
+/**function sendProduct() {
 	// Obtengo el mensaje del input
 	const form = document.querySelector('form')
 	let product = Object.values(form).reduce((obj,field) => { obj[field.name] = field.value; return obj }, {})
@@ -14,10 +14,11 @@ function deleteProduct() {
 	const id = document.getElementById('id').value;
 	// Envío el mensaje al servidor
 	socket.emit('delete-product', id);
-}
+}**/
 
 function render(data) {
 	// Genero el html
+	console.log(data)
 	const html = document.getElementById('productsContainer');
 	html.innerHTML = '';
 	data.forEach(element => {
@@ -38,7 +39,8 @@ function render(data) {
 }
 
 // Event listener
-socket.on('products', (data) => {
-	render(data);
+socket.on('products', (products) => {
+	console.log(products)
+	render(products);
 });
 
