@@ -10,8 +10,6 @@ import { productsController } from './utils/instances.js';
 //app and ProductManager instance creation
 const app = express();
 
-const products = await productsController.getProducts();
-
 //json parsing middleware
 app.use(express.json())
 //data request parsing middleware
@@ -42,25 +40,26 @@ const webServer = app.listen(8080, () => {
 const io = new Server(webServer);
 
 // socket.io events
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
 	console.log('New client connected!');
+	let products = await productsController.getProducts();
 	socket.emit('products', products);
 
 	// Listening to messages sent by client and sharing them
-	socket.on('new-product', (product) => {
+	socket.on('new-product', async (product) => {
 		console.log(product);
-		let newProduct = productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
-		// Agrego el mensaje al array de mensajes
-		products.push(newProduct);
+		productsController.addProduct(product.title, product.description, product.price, product.code, product.stock, product.thumbnail)
+		let products = await productsController.getProducts();
 		// Propago el evento a todos los clientes conectados
-		io.emit('new-product', products);
+		io.emit('products', products);
 	});
 
-	socket.on('delete-product', (id) => {
+	socket.on('delete-product', async (id) => {
 		console.log(id);
 		let productId = Math.round(id)
 		productsController.deleteProduct(productId)
+		let products = await productsController.getProducts();
 		// Propago el evento a todos los clientes conectados
-		io.emit('delete-product', products);
+		io.emit('products', products);
 	});
 });

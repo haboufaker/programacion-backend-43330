@@ -42,11 +42,3 @@ socket.on('products', (data) => {
 	render(data);
 });
 
-socket.on('new-product', (data) => {
-	render(data);
-});
-
-socket.on('delete-product', (data) => {
-	render(data);
-});
-
