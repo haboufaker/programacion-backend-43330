@@ -38,7 +38,7 @@ cartsRouter.get('/:cid', async (req, res) => {
 cartsRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
         let cartId = req.params.cid
-        let productId = Math.round(req.params.pid)
+        let productId = req.params.pid
 
 		let existingCartProducts = await cartService.addProductById(cartId, productId);
 		console.log(existingCartProducts)
