@@ -1,0 +1,37 @@
+<div><br /></div>
+<div class='container'>
+	<div class='row'>
+
+		{{#each docs}}
+		<div class="col-md-3">
+			<div class="card">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item"><b>Title:</b> {{this.title}} </li>
+				<li class="list-group-item"><b>Description:</b> {{this.description}}</li>
+				<li class="list-group-item"><b>Price:</b> {{this.price}}</li>
+				<li class="list-group-item"><b>Code:</b> {{this.code}}</li>
+				<li class="list-group-item"><b>Stock:</b> {{this.stock}}</li>
+                <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
+			</ul>
+			</div>
+		</div>
+		{{/each}}
+
+		<div class="col-12 text-center">
+			<nav>
+				<ul class="pagination">
+					{{#if hasPrevPage}} <li class="page-item"> {{else}}<li class="page-item disabled">{{/if}}
+					<a class="page-link" href="?limit={{limit}}&page={{prevPage}}&category={{category}}&availability={{availability}}">Previous</a>
+					</li>
+					<li class="page-item active" aria-current="page">
+					<a class="page-link" href="#">{{ page }}</a>
+					</li>
+					{{#if hasNextPage}} <li class="page-item"> {{else}}<li class="page-item disabled">{{/if}}
+					<a class="page-link" href="?limit={{limit}}&page={{nextPage}}&category={{category}}&availability={{availability}}">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+</div>
