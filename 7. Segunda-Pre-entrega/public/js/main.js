@@ -48,6 +48,26 @@ function render(data) {
 		});
 }
 
+// Function to add a product to cart
+/**function addToCart(productId) {
+	fetch(`/api/cart/add/${productId}`, {
+		method: 'POST',
+	  	headers: {
+			'Content-Type': 'application/json'
+	  	},
+	  	body: JSON.stringify({ quantity: 1 })
+	})
+	.then(response => {
+		if (response.ok) {
+			console.log('Product added to cart successfully');
+		} else {
+			console.error('Failed to add product to cart');
+		}
+	})
+	.catch(error => {
+		console.error('An error occurred while adding the product to cart', error);
+	});
+}**/
 
 
 // Event listener

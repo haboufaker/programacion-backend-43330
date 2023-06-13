@@ -50,7 +50,18 @@ viewsRouter.get('/products', async (req, res) => {
 		products.category = category;
 		products.availability = availability;
 
-		res.render('products', products)
+		res.render('products', {
+			docs: products.docs,
+			hasPrevPage: products.hasPrevPage,
+			prevPage: products.prevPage,
+			hasNextPage: products.hasNextPage,
+			nextPage: products.nextPage,
+			limit: products.limit,
+			page: products.page,
+			category: category,
+			availability: availability,
+			showAddToCartButton: true
+		});
 	} catch {
 		res.status(500).send({Error: "Internal server error"});
 	}
@@ -60,7 +71,6 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
 	try {
 		const cid = req.params.cid;
 		const cart = await cartModel.findById(cid).populate('products.product');
-		console.log(cart.products); // Add this line to inspect the cart products
 		const cartData = {
 		  products: cart.products.map(item => {
 			return {
