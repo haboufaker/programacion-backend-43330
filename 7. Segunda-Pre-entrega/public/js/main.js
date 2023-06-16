@@ -1,3 +1,5 @@
+window.onload = cartChecker;
+
 // Socket init
 const socket = io();
 let user;
@@ -15,7 +17,68 @@ Swal.fire({
 	user = result.value
 	socket.emit('connected1', {user})
 	socket.emit('connected2', {user});
-}),
+});
+
+// Check if cart ID is present in session storage
+async function cartChecker() {
+	let cartId = sessionStorage.getItem("cartId");
+  
+	if (!cartId) {
+	  try {
+		const response = await fetch("/api/carts", {
+		  method: "POST",
+		});
+  
+		if (response.ok) {
+		  const data = await response.json();
+		  cartId = data.cartId;
+		  sessionStorage.setItem("cartId", cartId);
+		  console.log(cartId);
+		} else {
+		  console.error("Failed to create the cart");
+		}
+	  } catch (error) {
+		console.error("An error occurred while creating the cart", error);
+	  }
+	}
+  
+	console.log(cartId);
+  }
+  
+// Add to cart button click event
+document.addEventListener("DOMContentLoaded", () => {
+	const addToCartButtons = document.getElementsByClassName("addToCartBtn");
+	Array.from(addToCartButtons).forEach((button) => {
+	  button.addEventListener("click", () => {
+		const productId = button.dataset.productId;
+		addToCart(productId);
+	  });
+	});
+  });
+
+// Add to cart button click event
+function addToCart(productId) {
+	const cartId = sessionStorage.getItem("cartId");
+  
+	// Make a POST request to add the product to the cart
+	fetch(`api/carts/${cartId}/products/${productId}`, {
+	  method: "POST",
+	})
+	  .then((response) => response.json())
+	  .then((data) => {
+		if (data.Error) {
+		  // Show error message if product not found
+		  console.error("Error:", data.Error);
+		} else {
+		  // Show success message if product added to the cart
+		  console.log("Success:", data.Message);
+		}
+	  })
+	  .catch((error) => {
+		console.error("An error occurred while adding the product to the cart", error);
+	  });
+};
+  
 
 chatBox.addEventListener('keyup', evt =>{
 	if (evt.key=== "Enter") {
@@ -48,28 +111,6 @@ function render(data) {
 		});
 }
 
-// Function to add a product to cart
-/**function addToCart(productId) {
-	fetch(`/api/cart/add/${productId}`, {
-		method: 'POST',
-	  	headers: {
-			'Content-Type': 'application/json'
-	  	},
-	  	body: JSON.stringify({ quantity: 1 })
-	})
-	.then(response => {
-		if (response.ok) {
-			console.log('Product added to cart successfully');
-		} else {
-			console.error('Failed to add product to cart');
-		}
-	})
-	.catch(error => {
-		console.error('An error occurred while adding the product to cart', error);
-	});
-}**/
-
-
 // Event listener
 socket.on('products', (products) => {
 	console.log(products)
@@ -92,4 +133,3 @@ socket.on('connected1', data => {
 		position: 'top-right',
 	});
 });
-

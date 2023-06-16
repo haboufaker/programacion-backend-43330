@@ -12,9 +12,11 @@ const cartsRouter = Router();
 // add cart POST method
 cartsRouter.post('/', async (req, res) => {
     try {
-        await cartService.addCart()
+        const newCart = await cartService.addCart()
 
-		res.status(201).send({Message: "Cart added"})
+		//sessionStorage.setItem("cartId", JSON.stringify(newCart._id));
+
+		res.status(201).send({ cartId: newCart._id });
     } catch (err) {
 		res.status(500).send({Error: "Internal server error"});
 	}

@@ -13,7 +13,7 @@
             <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
           </ul>
             <div class="card-body">
-              <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
+              <button class="btn btn-primary addToCartBtn" data-product-id="{{this._id}}">Add to Cart</button>
             </div>
         </div>
       </div>
@@ -45,4 +45,4 @@
   </div>
 </div>
 
-<script src='/js/main.js'></script>
+<script type="module" src='/js/main.js'></script>

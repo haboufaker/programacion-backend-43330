@@ -34,7 +34,6 @@ class ProductService {
         if (sortOption && products.docs.length > 1) {
             products.docs.sort((a, b) => a.price - b.price);
         }
-        console.log(products);
         return products;
         }
 
@@ -86,7 +85,7 @@ class ProductService {
 
             if (Object.keys(product).includes("code")) {
                 const existingProductCode = await this.model.find({code: {$eq: product.code}})
-                console.log(existingProductCode)
+                
                 if (!(existingProductCode === []) || (Object.keys(product).includes("id"))) {
                     throw new Error("Can't update object property, make sure the property exists, you are not trying to modify the product code with an existing one for another product or you are not trying to modify the object's ID");
                 }
@@ -106,7 +105,6 @@ class ProductService {
                 throw new Error('\nError: Not found\n');
             }
             const existingProduct = await this.getProductById(id);
-            console.log(existingProduct)
 
             if (existingProduct === null) {
                 throw new Error('\nError: Not found\n');
