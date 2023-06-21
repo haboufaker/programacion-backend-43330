@@ -4,6 +4,11 @@ import userService from '../dao/service/user.service.js';
 const sessionsRouter = Router();
 
 sessionsRouter.post('/', async (req, res) => {
+	const { email, password } = req.body;
+
+	if (email === "adminCoder@coder.com") {
+		throw new Error('Invalid credentials')
+	}
 	const userData = req.body;
 	try {
 		const newUser = await userService.createUser(userData);
@@ -37,8 +42,8 @@ sessionsRouter.post('/auth', async (req, res) => {
 		} else {
 			const user = await userService.getByEmail(email);
 
-			if (!user) throw new Error('Invalid data'); // Existe el usuario?
-			if (user.password !== password) throw new Error('Invalid data'); // La contraseña es correcta?
+			if (!user) throw new Error('Invalid data'); 
+			if (user.password !== password) throw new Error('Invalid data');
 
 			req.session.user = user;
 

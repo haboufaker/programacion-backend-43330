@@ -32,7 +32,11 @@
             <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
           </ul>
             <div class="card-body">
-              <button class="btn btn-primary addToCartBtn" data-product-id="{{this._id}}">Add to Cart</button>
+              <form action='/api/carts/{{cartId}}/products/{{this._id}}' method='post'>
+                <div class='row'>
+                  <button class="btn btn-primary addToCartBtn">Add to Cart</button>
+                </div>
+              </form>
             </div>
         </div>
       </div>

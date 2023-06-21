@@ -41,8 +41,8 @@ cartsRouter.get('/:cid', async (req, res) => {
 // add product to cart POST method
 cartsRouter.post('/:cid/products/:pid', async (req, res) => {
     try {
-        let cartId = req.params.cid;
-        let productId = req.params.pid;
+		let cartId = req.params.cid;
+		let productId = req.params.pid;
 
         let existingCartProducts = await cartService.addProductById(cartId, productId);
 

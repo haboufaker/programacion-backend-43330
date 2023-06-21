@@ -34,9 +34,13 @@ async function cartChecker() {
 		  cartId = data.cartId;
 		  sessionStorage.setItem("cartId", cartId);
 		  console.log(cartId);
+		
+		  return cartId
 		} else {
 		  console.error("Failed to create the cart");
 		}
+	
+		return cartId
 	  } catch (error) {
 		console.error("An error occurred while creating the cart", error);
 	  }
@@ -46,7 +50,7 @@ async function cartChecker() {
   }
   
 // Add to cart button click event
-document.addEventListener("DOMContentLoaded", () => {
+/**document.addEventListener("DOMContentLoaded", () => {
 	const addToCartButtons = document.getElementsByClassName("addToCartBtn");
 	Array.from(addToCartButtons).forEach((button) => {
 	  button.addEventListener("click", () => {
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		addToCart(productId);
 	  });
 	});
-  });
+});**/
 
 // Add to cart button click event
 function addToCart(productId) {
