@@ -4,7 +4,6 @@ import productService from "../dao/service/product.service.js";
 import { messageModel } from '../dao/models/message.model.js';
 import { cartModel } from '../dao/models/cart.model.js';
 import { isAuth, isGuest } from '../middleware/auth.middleware.js';
-import { cartChecker } from '../../public/js/main.js';
 
 
 // Router instance
@@ -57,8 +56,6 @@ viewsRouter.get('/products', async (req, res) => {
 		const category = req.query.category;
 		const availability = req.query.availability;
 		const sort = req.query.sort;
-		const cartId = sessionStorage.getItem("cartId")
-		console.log(cartId)
 
 		const products = await productService.getProductsForView(sort, limit, page, category, availability);
 		products.category = category;
@@ -76,7 +73,6 @@ viewsRouter.get('/products', async (req, res) => {
 			availability: availability,
 			showAddToCartButton: true,
 			user,
-			cartId,
 		});
 	} catch(err) {
 		console.log(err)

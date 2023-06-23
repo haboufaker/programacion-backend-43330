@@ -4,6 +4,17 @@ window.onload = cartChecker;
 const socket = io();
 let user;
 let chatBox = document.getElementById("chatBox");
+let addToCartButtons = document.querySelectorAll("#addToCartBtn");
+console.log(addToCartButtons);
+
+// Add to cart button click event
+addToCartButtons.forEach(addToCartButton => {
+	addToCartButton.addEventListener("click", () => {
+		const productId = addToCartButton.dataset.productId;
+		console.log(productId)
+		addToCart(productId);
+	});
+})
 
 Swal.fire({
 	title: "Please sign in",
@@ -47,20 +58,9 @@ async function cartChecker() {
 	}
   
 	console.log(cartId);
-  }
-  
-// Add to cart button click event
-/**document.addEventListener("DOMContentLoaded", () => {
-	const addToCartButtons = document.getElementsByClassName("addToCartBtn");
-	Array.from(addToCartButtons).forEach((button) => {
-	  button.addEventListener("click", () => {
-		const productId = button.dataset.productId;
-		addToCart(productId);
-	  });
-	});
-});**/
+}
 
-// Add to cart button click event
+// Add to cart function
 function addToCart(productId) {
 	const cartId = sessionStorage.getItem("cartId");
   
