@@ -14,6 +14,7 @@ import { sessionsRouter } from './routes/sessions.router.js';
 import passport from 'passport';
 import session from 'express-session';
 import initializePassport from './config/passport.config.js';
+import 'dotenv/config';
 
 
 //app and ProductManager instance creation
@@ -31,14 +32,14 @@ app.set('views', 'views/');
 app.use(express.static('public'));
 
 // Middleware cookies parser
-app.use(cookieParser('B2zdY3B$pHmxW%'));
+app.use(cookieParser(process.env.COOKIE_PARSER_KEY));
 
 // Session
 app.use(
 	session({
 		store: MongoStore.create({
 			mongoUrl:
-				'mongodb+srv://haboufaker:22240102@ecommerce.2kthzl2.mongodb.net/?retryWrites=true&w=majority',
+				process.env.DB_URL,
 			mongoOptions: {
 				useNewUrlParser: true,
 			},
@@ -54,7 +55,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //MongoDB database
-mongoose.connect('mongodb+srv://haboufaker:22240102@ecommerce.2kthzl2.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect(process.env.DB_CREDENTIALS);
 
 // use products router for "/api/products"
 app.use('/api/products', productsRouter);
@@ -72,7 +73,7 @@ app.use('/', viewsRouter);
 
 
 //Listening to port 8080
-const webServer = app.listen(8080, () => {
+const webServer = app.listen(process.env.PORT, () => {
 	console.log('Listening on port 8080');
 });
 

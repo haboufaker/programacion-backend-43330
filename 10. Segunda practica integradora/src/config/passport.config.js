@@ -39,7 +39,7 @@ const initializePassport = () => {
                             password: hashedPassword,
                             age,
                             role,
-							cart: "123",
+							cart
                         });
 
                         return done(null, newUser);
@@ -74,7 +74,7 @@ const initializePassport = () => {
                             password: "adminCod3r123",
                             age: 99,
                             role: "admin",
-							cart: '123',
+							cart: null
                         };
 
 
@@ -126,7 +126,7 @@ const initializePassport = () => {
 							password: '',
 							age: 18,
                             role: "user",
-							cart: "123"
+							cart: null
 						};
 						user = await userService.createUser(newUser);
 						done(null, user);

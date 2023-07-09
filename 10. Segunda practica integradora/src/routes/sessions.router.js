@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import passport from 'passport';
 import userService from '../dao/service/user.service.js';
+import mongoose from 'mongoose';
+import userModel from '../dao/models/user.model.js';
 
 const sessionsRouter = Router();
 
@@ -72,6 +74,7 @@ sessionsRouter.post('/:uid/cart/:cid', async (req, res) => {
     try {
 		let userId = req.params.uid;
 		let cartId = req.params.cid;
+		console.log(userId);
 		
 
         await userService.addCartById(userId, cartId);
@@ -83,7 +86,13 @@ sessionsRouter.post('/:uid/cart/:cid', async (req, res) => {
 });
 
 sessionsRouter.get('/current', async (req, res) => {
-	const user = req.session.user;
+	
+	const userStandard = req.session.user;
+
+	const user = await userModel.findOne({ email: userStandard.email}).populate('cart');
+
+
+	console.log(user)
 
 	if (!user) {
 		return res.status(404).send('No user logged in');

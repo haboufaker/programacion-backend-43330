@@ -32,13 +32,17 @@ Swal.fire({
 // Check if cart ID is present in session storage
 async function cartChecker() {
 	try {
-		const userId = document.getElementById("userId").dataset.userId;
+		let userId;
+		if (document.getElementById("userId").dataset.userEmail !== "adminCoder@coder.com") {
+			userId = document.getElementById("userId").dataset.userId;
 
-		if (!userId) {
-			console.error("An error occurred while adding the cart to the user", error);
+			if (!userId) {
+				console.error("An error occurred while adding the cart to the user", error);
+			}
+
+			console.log(userId)
 		}
-
-		console.log(userId)
+		
 		let cartId = sessionStorage.getItem("cartId");
   
 		if (!cartId) {
@@ -51,6 +55,10 @@ async function cartChecker() {
 			cartId = data.cartId;
 			sessionStorage.setItem("cartId", cartId);
 			console.log(cartId);
+
+			if (document.getElementById("userId").dataset.userEmail === "adminCoder@coder.com") {
+				return cartId;
+			}
 
 			fetch(`api/sessions/${userId}/cart/${cartId}`, {
 				method: "POST",
@@ -69,7 +77,7 @@ async function cartChecker() {
 				  console.error("An error occurred while adding the cart to the user", error);
 				});
 
-			return cartId
+				return cartId;
 			}
 		}
 		
@@ -119,7 +127,10 @@ function addToCart(productId) {
 		console.error("An error occurred while adding the product to the cart", error);
 	  });
 };
-  
+
+function logOut() {
+	sessionStorage.clear();
+}
 
 chatBox.addEventListener('keyup', evt =>{
 	if (evt.key=== "Enter") {

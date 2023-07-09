@@ -20,8 +20,7 @@ const userSchema = new mongoose.Schema({
 	cart: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'carts',
-		required: true,
-		default: '123'
+		default: null
 	},
 });
 

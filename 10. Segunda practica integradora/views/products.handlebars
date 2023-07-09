@@ -1,6 +1,6 @@
 <div><br /></div>
 <div class='container'>
-  <h1 id='userId' data-user-id="{{user._id}}">Welcome, {{user.first_name}} {{user.last_name}}</h1>
+  <h1 id='userId' data-user-id="{{user._id}}" data-user-email="{{user.email}}">Welcome, {{user.first_name}} {{user.last_name}}</h1>
 
   <p>Don't forget your credentials!</p>
 
@@ -16,6 +16,7 @@
             <button
                 type='submit'
                 class='btn btn-primary col-12'
+                onclick="logOut()"
             >Logout</button>
           </div>
       </form>

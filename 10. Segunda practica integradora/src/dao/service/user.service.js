@@ -29,7 +29,7 @@ class UserService {
 			console.log(cart)
 
 
-            const user = await this.model.getUserById(userId).populate({
+            const user = await this.model.findById(userId).populate({
                 path: 'cart',
                 model: 'carts'
             });
@@ -37,7 +37,7 @@ class UserService {
 
 			user.cart = cart._id
 			
-
+			console.log(user)
             await user.save();
 
         } catch (err) {
