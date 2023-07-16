@@ -1,0 +1,28 @@
+<section class='container'>
+	<div class='row bg-light login-section'>
+		<div class='col-4'>
+		</div>
+		<div class='col-8' style='padding: 50px 20px;'>
+			<h1>Welcome, {{user.first_name}} {{user.last_name}}</h1>
+
+			<p>Don't forget your credentials!</p>
+
+			<ul>
+				<li><b>Name: </b>{{user.first_name}}</li>
+				<li><b>Last Name: </b>{{user.last_name}}</li>
+				<li><b>Email: </b>{{user.email}}</li>
+			</ul>
+            <form action='/api/sessions/logout' method='post'>
+                <div class='row'>
+                    <button
+                        type='submit'
+                        class='btn btn-primary col-12'
+						onclick="logOut()"
+                    >Logout</button>
+                </div>
+            </form>
+		</div>
+	</div>
+</section>
+
+<script src='/js/main.js'></script>

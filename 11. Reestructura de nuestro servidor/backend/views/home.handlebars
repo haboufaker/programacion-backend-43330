@@ -1,0 +1,21 @@
+<div id="products">
+	{{#each products}}
+    <div id="products" class="product">
+        <p>{{this.title}}</p>
+        <p>{{this.description}}</p>
+        <p>{{this.price}}</p>
+        <p>{{this.thumbnail}}</p>
+        <p>{{this.code}}</p>
+        <p>{{this.stock}}</p>
+        <p>{{this.status}}</p>
+        <p>{{this.id}}</p>
+    </div>
+    {{/each}}
+</div>
+<!--
+<input type='text' id='message' />
+
+<button id='send' onclick='sendMenssage()'>Enviar</button>
+-->
+
+<script src='/js/main.js'></script>
