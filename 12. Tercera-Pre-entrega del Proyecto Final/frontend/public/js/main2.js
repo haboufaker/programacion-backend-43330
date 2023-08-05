@@ -7,6 +7,7 @@ purchaseButton.addEventListener("click", () => {
 
 function purchase() {
     const cartId = sessionStorage.getItem("cartId");
+    console.log(`Este es el cartId de purchase ${cartId}`)
     let userId;
     if (document.getElementById("userId").dataset.userEmail !== "adminCoder@coder.com") {
         userId = document.getElementById("userId").dataset.userId;
@@ -33,4 +34,9 @@ function purchase() {
         .catch((error) => {
             console.error("An error occurred while completing the order, please try again later", error);
         });
+}
+
+
+function goToProducts() {
+	window.location.href = '/products';
 }

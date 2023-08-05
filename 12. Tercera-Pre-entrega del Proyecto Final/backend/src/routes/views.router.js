@@ -21,7 +21,7 @@ viewsRouter.get('/chat', isUser, chat);
 
 viewsRouter.get('/products', products);
 
-viewsRouter.get('/carts/:cid', getCarts);
+viewsRouter.get(`/carts/`, getCarts);
 
 viewsRouter.get('/register', isGuest, (req, res) => {
 	res.render('register', {

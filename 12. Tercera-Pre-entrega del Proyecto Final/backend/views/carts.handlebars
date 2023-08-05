@@ -44,8 +44,22 @@
 		<div class="card-body">
 			<button id= "purchaseBtn" class="btn btn-primary purchaseBtn">Complete Order</button>
 		</div>
+		<div class='row'>
+		<button
+			type='submit'
+			class='btn btn-primary col-12'
+			onclick="goToProducts()"
+		>Return to products</button>
+		</div>
   {{else}}
     <p>No products in the cart.</p>
+		<div class='row'>
+		<button
+			type='submit'
+			class='btn btn-primary col-12'
+			onclick="goToProducts()"
+		>Return to products</button>
+		</div>
   {{/if}}
 
 	

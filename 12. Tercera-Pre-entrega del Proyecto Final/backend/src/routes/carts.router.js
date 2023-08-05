@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { addCart, getCartProducts, addProductToCart, deleteProductFromCart, updateCartProducts, updateProductQuantity, deleteAllCartProducts, purchase } from "../controllers/carts.controller.js";
+import { addCart, getCartProducts, addProductToCart, deleteProductFromCart, updateCartProducts, updateProductQuantity, deleteAllCartProducts, purchase, mail } from "../controllers/carts.controller.js";
 import { isUser } from "../middlewares/auth.middleware.js";
-
 
 // Route creation
 const cartsRouter = Router();
@@ -28,6 +27,8 @@ cartsRouter.put('/:cid/products/:pid', updateProductQuantity);
 cartsRouter.delete('/:cid', deleteAllCartProducts);
 
 cartsRouter.post('/:cid/purchase', purchase);
+
+cartsRouter.get('/mail/:tid', mail);
 
 // Route export
 export { cartsRouter };

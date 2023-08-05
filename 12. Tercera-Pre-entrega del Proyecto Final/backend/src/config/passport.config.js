@@ -4,6 +4,7 @@ import userService from '../services/user.service.js';
 import { comparePassword, hashPassword } from '../utils/bcrypt.util.js';
 import GitHubStrategy from 'passport-github2';
 import enviroment from '../config/enviroment.js';
+import NewUserDTO from '../dto/newUser.dto.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -33,8 +34,7 @@ const initializePassport = () => {
 
                         const hashedPassword = await hashPassword(password);
 
-                        const newUser = await userService.createUser({
-                            first_name,
+                        const newUser = new NewUserDTO({first_name,
                             last_name,
                             email: username,
                             password: hashedPassword,
@@ -43,7 +43,9 @@ const initializePassport = () => {
 							cart
                         });
 
-                        return done(null, newUser);
+						const userCreation = await userService.createUser(newUser)
+
+                        return done(null, userCreation);
                     }
 				} catch (error) {
 					done(error);
@@ -120,7 +122,7 @@ const initializePassport = () => {
 						profile._json.email
 					);
 					if (!user) {
-						let newUser = {
+						let newUser = new NewUserDTO({
 							first_name: profile._json.name,
 							last_name: '',
 							email: profile._json.email,
@@ -128,7 +130,7 @@ const initializePassport = () => {
 							age: 18,
                             role: "user",
 							cart: null
-						};
+						});
 						user = await userService.createUser(newUser);
 						done(null, user);
 					} else {

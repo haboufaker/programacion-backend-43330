@@ -4,11 +4,8 @@ const socket = io();
 let user;
 let chatBox = document.getElementById("chatBox");
 let addToCartButtons = document.querySelectorAll("#addToCartBtn");
-let goToCartButton = document.getElementById("goToCart");
-
-let purchaseButton = document.getElementById("purchaseBtn");
-
-console.log(goToCartButton);
+/**let goToCartButton = document.getElementById("goToCartButton");
+console.log(goToCartButton);**/
 
 // Add to cart button click event
 addToCartButtons.forEach(addToCartButton => {
@@ -19,10 +16,9 @@ addToCartButtons.forEach(addToCartButton => {
 	});
 })
 
-// Purchase button click event
-goToCartButton.addEventListener("click", () => {
+/** goToCartButton.addEventListener("click", () => {
 	goToCart();
-});
+});**/
 
 Swal.fire({
 	title: "Please sign in",
@@ -37,6 +33,7 @@ Swal.fire({
 	socket.emit('connected1', {user})
 	socket.emit('connected2', {user});
 });
+
 
 // Check if cart ID is present in session storage
 async function cartChecker() {
@@ -158,11 +155,16 @@ function purchase() {
 		});
 };
 
-function goToCart() {
+/**function goToCart() {
 	const cartId = sessionStorage.getItem("cartId");
 	fetch(`api/sessions/carts/${cartId}`, {
 		method: "POST",
 	})
+}**/
+
+function goToCart() {
+	const cartId = sessionStorage.getItem("cartId");
+	window.location.href = `/carts?cid=${cartId}`;
 }
 
 function logOut() {

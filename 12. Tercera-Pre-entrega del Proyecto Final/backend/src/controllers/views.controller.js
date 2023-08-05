@@ -1,5 +1,7 @@
 import productService from "../services/product.service.js";
 import cartService from '../services/cart.service.js';
+import ProductRenderDTO from "../dto/productRender.dto.js";
+import CartDataRenderDTO from "../dto/cartDataRender.dto.js";
 
 export const realTimeProducts = async (req, res) => {
 	try {
@@ -32,7 +34,7 @@ export const products = async (req, res) => {
 		products.category = category;
 		products.availability = availability;
 
-		res.render('products', {
+		const productRender = new ProductRenderDTO({
 			docs: products.docs,
 			hasPrevPage: products.hasPrevPage,
 			prevPage: products.prevPage,
@@ -44,7 +46,9 @@ export const products = async (req, res) => {
 			availability: availability,
 			showAddToCartButton: true,
 			user,
-		});
+		})
+
+		res.render('products', productRender );
 	} catch(err) {
 		console.log(err)
 		res.status(500).send({Error: "Internal server error"});
@@ -55,7 +59,8 @@ export const getCarts = async (req, res) => {
 	try {
 		const {user} = req.session;
 		delete user.password;
-		const cid = req.params.cid;
+		const cid = req.query.cid;
+		console.log(`Este es el cid en getCarts del view ${cid}`)
 		const cart = await cartService.findById(cid);
 		const cartData = {
 		  products: cart.products.map(item => {
@@ -66,10 +71,13 @@ export const getCarts = async (req, res) => {
 			};
 		  })
 		};
-		res.render('carts', {
+
+		const cartDataRender = new CartDataRenderDTO({
 			cart: cartData,
 			user,
 		});
+
+		res.render('carts', cartDataRender);
 	} catch(err) {
 		console.log(err)
 	  res.status(500).send({ Error: "Internal server error" });

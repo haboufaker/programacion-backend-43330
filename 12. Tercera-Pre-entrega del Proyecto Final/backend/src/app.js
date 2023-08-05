@@ -15,6 +15,9 @@ import passport from 'passport';
 import session from 'express-session';
 import initializePassport from './config/passport.config.js';
 import enviroment from './config/enviroment.js';
+import nodemailer from 'nodemailer';
+import ticketService from './services/ticket.service.js';
+import userService from './services/user.service.js';
 
 //app and ProductManager instance creation
 const app = express();
@@ -53,6 +56,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 //MongoDB database
 mongoose.connect(enviroment.DB_CREDENTIALS);
 
@@ -69,7 +73,19 @@ app.use('/api/sessions', sessionsRouter);
 // use views router
 app.use('/', viewsRouter);
 
-
+app.get('/mail/:tid', async (req, res) => {
+    
+	const tid = req.params.tid;
+	const ticket = await ticketService.getTicketById(tid)
+	const user = await userService.getByEmail(ticket.purchaser)
+	const mailOptions = {
+        from: `Coderhouse Test <${process.env.EMAIL}>`,
+        to: ticket.purchaser,
+        subject: 'Thank you for your Steam purchase!',
+        html: `<h1>Hey ${user.first_name}! Your order #${ticket.code} has been succesfully placed for a total amount of $${ticket.amount} on ${ticket.purchase_datetime}</h1>`,
+        attachments: [],
+    };
+})
 
 //Listening to port 8080
 const webServer = app.listen(enviroment.PORT, () => {

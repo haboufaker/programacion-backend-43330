@@ -2,7 +2,17 @@ import cartService from "../services/cart.service.js";
 import userService from '../services/user.service.js';
 import productService from "../services/product.service.js";
 import ticketService from "../services/ticket.service.js";
+import enviroment from "../config/enviroment.js";
+import nodemailer from 'nodemailer';
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: enviroment.EMAIL,
+        pass: enviroment.EMAIL_PASSWORD,
+    },
+});
 
 export const addCart = async (req, res) => {
     try {
@@ -167,7 +177,6 @@ export const purchase = async (req, res) => {
 		}
 
 		const getCartProducts = await cartService.getCartProductsById(cid);
-		console.log(getCartProducts)
 
 		if (getCartProducts === [] || getCartProducts === null) {
 			res.status(404).send({Message: "There are no products in this cart"});
@@ -194,10 +203,9 @@ export const purchase = async (req, res) => {
 				 
 				amount = amount + orderquantity * productInStock.price;
 
-				console.log(productInStock)
+				console.log(`Estos son los productos en estock ${productInStock}`)
 
 				const updatedProduct = await productService.updateProduct(productInStock._id, productUpdater)
-				console.log(updatedProduct)
 
 				await productInStock.save();
 
@@ -248,9 +256,36 @@ export const purchase = async (req, res) => {
 			return res.status(500).json({ status: "error", payload: order });
 		}
 
+		fetch(`http://localhost:${enviroment.PORT}/api/carts/mail/${resolvedTicket._id}`, {
+			method: "GET",
+		})
+
 		res.status(201).send({Message: "Order Processed"})
     } catch (err) {
 		console.error(err);
     	res.status(500).json({ Error: "Internal server error" })
 	}
 };
+
+export const mail = async (req, res) => {
+    
+	const tid = req.params.tid;
+	const ticket = await ticketService.getTicketById(tid)
+	const user = await userService.getByEmail(ticket.purchaser)
+	const mailOptions = {
+        from: `Coderhouse Test <${enviroment.EMAIL}>`,
+        to: ticket.purchaser,
+        subject: 'Thank you for your purchase!',
+        html: `<h1>Hey ${user.first_name}! Your order #${ticket.code} has been succesfully placed for a total amount of $${ticket.amount} on ${ticket.purchase_datetime}</h1>`,
+        attachments: [],
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+        }
+        console.log('Email sent: ' + info.response);
+    });
+
+    res.send('Sent');
+}

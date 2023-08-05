@@ -76,7 +76,8 @@ sessionsRouter.get('/current', getCurrentUser)
 
 sessionsRouter.post('/carts/:cid', (req, res) => {
 	const id = req.params.cid
-	res.redirect(`/carts/${id}`);
+	console.log(`Este es el cartId ${id}`)
+	res.redirect(`/carts/?cid=${id}`);
 });
 
 export { sessionsRouter };

@@ -16,4 +16,6 @@ export default {
     DB_CREDENTIALS: process.env.DB_CREDENTIALS,
     ADMIN_USER: process.env.ADMIN_USER,
     ADMIN_PASS: process.env.ADMIN_PASS,
+    EMAIL: process.env.EMAIL,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
 };

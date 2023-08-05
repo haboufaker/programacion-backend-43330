@@ -11,14 +11,14 @@
         <li><b>Age: </b>{{user.age}}</li>
         <li><b>Role: </b>{{user.role}}</li>
 			</ul>
-        <div class='row'>
-          <button
-              id = 'goToCart'
-              type='submit'
-              class='btn btn-primary col-12'
-              onclick="goToCart()"
-          >Go to Cart</button>
-        </div>
+      <div class='row'>
+        <button
+          id = 'goToCartButton'
+          type='submit'
+          class='btn btn-primary col-12'
+          onclick="goToCart()"
+        >Go to Cart</button>
+      </div>
       <form action='/api/sessions/logout' method='post'>
           <div class='row'>
             <button
