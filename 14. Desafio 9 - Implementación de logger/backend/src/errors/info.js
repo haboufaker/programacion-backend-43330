@@ -1,0 +1,3 @@
+export const generateProductErrorInfo = (product) => {
+    return `One or more properties were incomplete or not valid.\nList of required properties:\ntitle: needs to be a String, received ${product.title}\ndescription: needs to be a String, received ${product.description}\nprice: needs to be a Number, received ${product.price}\ncode: needs to be a String, received ${product.code}\nstock: needs to be a Number, received ${product.stock}\nthumbnail: needs to be an Array, received ${product.thumbnail}\ncode: needs to be a String, received ${product.category}\navailability: needs to be a Boolean, received ${product.availability}`
+}
