@@ -116,14 +116,18 @@ export const resetPassword = async (req, res) => {
 	res.redirect('/passwordResetSuccess'); // Redirect to a view indicating password reset success
 }
 
-export const premium = async (req, res) => {
-	const userId = req.params.uid;
-	const newRole = req.body.newRole;
-
-	if (newRole === 'premium' || newRole === 'user') {
+export const updateUserRole= async (req, res) => {
+	try {
+	  const userId = req.body.userId;
+	  const newRole = req.body.newRole;
+  
+	  if (newRole === 'premium' || newRole === 'user') {
 		const updatedUser = await userService.changeUserRole(userId, newRole);
 		res.status(201).send({ Message: "User role updated", updatedUser });
-	} else {
+	  } else {
 		res.status(400).send({ Error: "Invalid role" });
+	  }
+	} catch (err) {
+	  res.status(500).send({ Error: "Internal server error" });
 	}
 }

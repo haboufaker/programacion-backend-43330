@@ -191,6 +191,12 @@ function addProducts() {
 	window.location.href = `/products/add`;
 }
 
+function redirectToPremium() {
+	const userId = document.getElementById('userIdInput').value;
+	const url = `/api/sessions/premium/${userId}`;
+	window.location.href = url;
+}
+
 function logOut() {
 	sessionStorage.clear();
 }

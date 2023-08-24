@@ -45,8 +45,13 @@ class ProductDAO {
         try {
             if (!product.thumbnail) {
                 product.thumbnail = [];
-            } else if (Array.isArray(product.thumbnail) !== true || (product.thumbnail.length > 0 && (typeof product.thumbnail[0]) !== "string")) {
+            } else if (Array.isArray(product.thumbnail) !== true && (typeof product.thumbnail) !== "string" || (typeof product.thumbnail[0]) !== "string") {
                 throw new Error('Bad Request');
+            }
+
+            if (typeof product.thumbnail === "string") {
+                let x = product.thumbnail;
+                product.thumbnail = Array.from(x.split(","));
             }
             if ((typeof product.title) !== "string" || (typeof product.description) !== "string" || (typeof Math.round(product.price)) !== "number" || (typeof product.code) !== "string" || (typeof Math.round(product.stock)) !== "number") {
                 throw new Error('Missing required field');
@@ -89,6 +94,13 @@ class ProductDAO {
                 if (!(existingProductCode === []) || (Object.keys(product).includes("id"))) {
                     throw new Error("Can't update object property, make sure the property exists, you are not trying to modify the product code with an existing one for another product or you are not trying to modify the object's ID");
                 }
+            }
+
+            if ( product.thumbnail && (typeof product.thumbnail) ==='string') {
+                const existingProductCode = await this.model.find({code: {$eq: product.code}})
+                let x = product.thumbnail
+                let y = Array.from(x.split(","));
+                product.thumbnail = existingProductCode.thumbnail.concat(y)
             }
 
             await this.model.findByIdAndUpdate(id,product);

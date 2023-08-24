@@ -71,6 +71,9 @@ viewsRouter.get('/samePassword',(req, res) => {
     res.render('samePassword');
 });
 
+viewsRouter.get('/premium',(req, res) => {
+    res.render('premium');
+});
 
 // Router export
 export {viewsRouter}

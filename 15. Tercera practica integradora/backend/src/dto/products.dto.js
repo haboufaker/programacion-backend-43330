@@ -9,5 +9,9 @@ export default class ProductDTO {
         this.category = product.category;
         this.availability = product.availability;
         this.owner = product.owner;
+
+        if (product.thumbnail && (typeof product.thumbnail) === "string") {
+            this.thumbnail = [product.thumbnail]
+        }
     }
 }

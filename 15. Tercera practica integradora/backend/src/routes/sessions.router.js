@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import passport from 'passport';
 import enviroment from '../config/enviroment.js';
-import { addCartToUser, getCurrentUser, forgotPassword, resetPassword, premium } from '../controllers/sessions.controller.js';
+import { addCartToUser, getCurrentUser, forgotPassword, resetPassword, updateUserRole } from '../controllers/sessions.controller.js';
+import { isAdmin } from '../middlewares/auth.middleware.js';
 
 const sessionsRouter = Router();
 
@@ -100,7 +101,14 @@ sessionsRouter.post('/forgotPassword', forgotPassword);
 
 sessionsRouter.post('/resetPassword', resetPassword );
 
-sessionsRouter.post('/premium/:uid', premium);
+sessionsRouter.get('/premium/:uid', isAdmin, (req, res) => {
+	const userId = req.params.uid;
+	res.render('premium', { userId });
+});
+
+sessionsRouter.post('/updateUserRole', updateUserRole);
+
+
 
 
 export { sessionsRouter };

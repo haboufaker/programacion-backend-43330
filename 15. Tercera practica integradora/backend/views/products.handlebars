@@ -20,7 +20,7 @@
           onclick="addProducts()"
         >Add Products</button>
       </div>
-
+      <div><br /></div>
       <div class='row'>
         <button
           id = 'goToCartButton'
@@ -29,6 +29,12 @@
           onclick="goToCart()"
         >Go to Cart</button>
       </div>
+      <div><br /></div>
+      <form id="changeRoleForm">
+        <input type="text" id="userIdInput" placeholder="Enter User ID" required>
+        <button type="button" onclick="redirectToPremium()">Change Role</button>
+      </form>
+      <div><br /></div>
       <form action='/api/sessions/logout' method='post'>
           <div class='row'>
             <button
@@ -38,6 +44,9 @@
             >Logout</button>
           </div>
       </form>
+
+      <div><br /></div>
+
   <div class='row'>
     {{#each docs}}
       <div class="col-md-3">
@@ -49,6 +58,7 @@
             <li class="list-group-item"><b>Code:</b> {{this.code}}</li>
             <li class="list-group-item"><b>Stock:</b> {{this.stock}}</li>
             <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
+            <li class="list-group-item"><b>Thumbnail:</b> {{this.thumbnail}}</li>
           </ul>
             <div class="card-body">
               <button id= "addToCartBtn" class="btn btn-primary addToCartBtn" data-product-id="{{this._id}}">Add to Cart</button>
