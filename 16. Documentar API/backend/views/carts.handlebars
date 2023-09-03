@@ -1,0 +1,69 @@
+<!-- carts.handlebars -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <h1 id='userId' data-user-id="{{user._id}}" data-user-email="{{user.email}}">Welcome, {{user.first_name}} {{user.last_name}}</h1>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Cart</h1>
+  {{#if cart.products.length}}
+    <table class="table">
+		<thead>
+			<tr>
+			<th>Product</th>
+			<th>Quantity</th>
+			<th>Title</th>
+			<th>Description</th>
+			<th>Price</th>
+			<th>Code</th>
+			<th>Stock</th>
+			<th>Thumbnail</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each cart.products}}
+			<tr>
+			<td>{{this.product._id}}</td>
+			<td>{{this.quantity}}</td>
+			<td>{{this.product.title}}</td>
+			<td>{{this.product.description}}</td>
+			<td>{{this.product.price}}</td>
+			<td>{{this.product.code}}</td>
+			<td>{{this.product.stock}}</td>
+			<td>
+				{{#each this.product.thumbnail}}
+				<img src="{{this}}" alt="Thumbnail" class="thumbnail-image">
+				{{/each}}
+			</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+		<div class="card-body">
+			<button id= "purchaseBtn" class="btn btn-primary purchaseBtn">Complete Order</button>
+		</div>
+		<div class='row'>
+		<button
+			type='submit'
+			class='btn btn-primary col-12'
+			onclick="goToProducts()"
+		>Return to products</button>
+		</div>
+  {{else}}
+    <p>No products in the cart.</p>
+		<div class='row'>
+		<button
+			type='submit'
+			class='btn btn-primary col-12'
+			onclick="goToProducts()"
+		>Return to products</button>
+		</div>
+  {{/if}}
+
+	
+	<script src='/js/main2.js'></script>
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+<h1>Change User Role</h1>
+<form id="changeRoleForm" method="POST" action="/api/sessions/updateUserRole">
+  <input type="hidden" name="userId" value="{{userId}}">
+  <label for="newRole">Select New Role:</label>
+  <select name="newRole" id="newRole">
+    <option value="user">User</option>
+    <option value="premium">Premium</option>
+  </select>
+  <button type="submit">Change Role</button>
+</form>
