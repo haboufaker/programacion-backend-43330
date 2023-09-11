@@ -1,0 +1,351 @@
+paths:
+  /api/carts/:
+    post:
+      summary: Adds a Cart
+      tags:
+        - Carts
+      responses:
+        201:
+          description: Cart added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        500:
+          description: Internal server error
+  /api/carts/{cid}:
+    get:
+      summary: Gets the cart products by ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Gets the cart products by ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        400:
+          description: Cart not found
+        500:
+          description: Internal server error
+    put:
+      summary: Updates the cart products by ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      requestBody:
+       required: true
+       content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/requestBodies/updateCartProduct'
+      responses:
+        200:
+          description: Cart updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        404:
+          description: Cart not found
+        500:
+          description: Internal server error
+    delete:
+      summary: Deletes all Cart products by ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      responses:
+        201:
+          description: cart products updated
+        500:
+          description: Internal server error
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Adds a product obtained from its ID to a specific cart by ID
+      security:
+        - bearerAuth: []
+          roles:
+            - user
+            - premium
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        201:
+          description: Cart updated
+        403:
+          description: Premium users cannot add their own products to the cart
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+    put:
+      summary: Updates product quantity in cart by ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      requestBody:
+       required: true
+       content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/requestBodies/updateCartQuantity'
+      responses:
+        200:
+          description: Quantity updated
+        403:
+          description: Cart not found
+        404:
+          description: Product not found in cart
+        500:
+          description: Internal server error
+    delete:
+      summary: Deletes a product obtained from its ID from a specific cart by ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product removed from cart
+        403:
+          description: Cart not found
+        404:
+          description: Product not found in cart
+        500:
+          description: Internal server error
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Handles order purchase
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+      responses:
+        201:
+          description: Order Processed
+        403:
+          description: User Not found
+        404:
+          description: Cart Not found
+        405:
+          description: There are no products in this cart
+        500:
+          description: Internal server error
+        501:
+          description: Error
+  /api/carts/mail/{tid}:
+    get:
+      summary: Handles order purchase
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: tid
+          required: true
+          description: Ticket ID
+          schema:
+            type: string
+      responses:
+        json:
+          description: Sent
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: product ID (generated by MongoDB)
+        products:
+          type: array
+          description: Products list, inclunding object an quantity, empty by default
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  _id:
+                    type: ObjectId
+                    description: product ID (generated by MongoDB)
+                  title:
+                    type: string
+                    description: Product title
+                  description:
+                    type: string
+                    description: Product description
+                  price:
+                    type: number
+                    description: Product price
+                  code:
+                    type: string
+                    unique: true
+                    description: Product code, unique value
+                  stock:
+                    type: number
+                    description: Product stock
+                  thumbnail:
+                    type: array
+                    default: []
+                    description: Array of images, empty by default
+                  category:
+                    type: string
+                    description: Product category
+                  availability:
+                    type: boolean
+                    default: true
+                    description: Product availability, true by default
+                  owner:
+                    type: String,
+                    default: "admin"
+                    description: Product Owner, admin by default
+              quantity:
+                type: number
+                default: 0
+      example:
+        id: ObjectId("5f9b2b3b9c4c9b1b2c9b1b3d")
+        products: [{
+          product: {
+            id: ObjectId("5f9b2b3b9c4c9b1b2c9b1b2c"),
+            title: "Product 1",
+            description: "This is Product 1",
+            price: 83,
+            code: "ABC123",
+            stock: 3,
+            thumbnail: ["product1.png", "product11.png"],
+            category: "Prototype",
+            availability: true,
+            owner: "admin"
+                    },
+          quantity: 1}]
+  requestBodies:
+    updateCartProduct:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: product ID (generated by MongoDB)
+        products:
+          type: array
+          description: Products list, inclunding object an quantity, empty by default
+          items: objecs
+          properties:
+            product:
+              type: object
+              properties:
+                _id:
+                  type: ObjectId
+                  description: product ID (generated by MongoDB)
+                title:
+                  type: string
+                  description: Product title
+                description:
+                  type: string
+                  description: Product description
+                price:
+                  type: number
+                  description: Product price
+                code:
+                  type: string
+                  unique: true
+                  description: Product code, unique value
+                stock:
+                  type: number
+                  description: Product stock
+                thumbnail:
+                  type: array
+                  default: []
+                  description: Array of images, empty by default
+                category:
+                  type: string
+                  description: Product category
+                availability:
+                  type: boolean
+                  default: true
+                  description: Product availability, true by default
+                  owner:
+                    type: String,
+                    default: "admin"
+                    description: Product Owner, admin by default
+            quantity:
+              type: number
+              default: 0
+    updateCartQuantity:
+      type: object
+      properties:
+        quantity:
+          type: number
+
