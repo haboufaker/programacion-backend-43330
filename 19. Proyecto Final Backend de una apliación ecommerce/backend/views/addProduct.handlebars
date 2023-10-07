@@ -1,0 +1,94 @@
+<div><br /></div>
+<div class='container'>
+  <h1 id='userId' data-user-id="{{user._id}}" data-user-email="{{user.email}}">Welcome, {{user.first_name}} {{user.last_name}}</h1>
+<!-- Add Product Form -->
+<form action="/api/products" method="POST">
+  <input type="text" name="title" placeholder="Title">
+  <input type="text" name="description" placeholder="Description">
+  <input type="number" name="price" placeholder="Price">
+  <input type="text" name="code" placeholder="Code">
+  <input type="number" name="stock" placeholder="Stock">
+  <input type="text" name="thumbnail" placeholder="Thumbnail URL">
+  <input type="text" name="category" placeholder="Category">
+  <button type="submit">Add Product</button>
+</form>
+<div><br /></div>
+
+<!-- Update Product Form -->
+<form action="/api/products/{{_id}}" method="PUT">
+  <input type="text" name="title" placeholder="Title">
+  <input type="text" name="description" placeholder="Description" >
+  <input type="number" name="price" placeholder="Price" >
+  <input type="text" name="code" placeholder="Code" >
+  <input type="number" name="stock" placeholder="Stock" >
+  <input type="text" name="thumbnail" placeholder="Thumbnail URL" >
+  <input type="text" name="category" placeholder="Category" >
+  <button type="submit">Update</button>
+</form>
+<div><br /></div>
+
+<!-- Delete Product Form -->
+<form>
+  <input type="text" name="productId" placeholder="Enter Product ID" required>
+  <button type="button" class="delete-btn" data-product-id="{{this._id}}">
+    Delete
+  </button>
+</form>
+<div><br /></div>
+
+<!-- Upload Product Image Form -->
+<form id="uploadProductImageForm" enctype="multipart/form-data">
+  <input type="text" id="productIdInput" placeholder="Enter Product ID" required>
+  <input type="file" name="productImage" accept="image/*">
+  <button type="button" id="uploadImageBtn" onclick= 'uploadImage()'>Upload Image</button>
+</form>
+
+
+<!-- Product List -->
+<div class='row'>
+    {{#each docs}}
+      <div class="col-md-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>id:</b> {{this._id}}</li>
+            <li class="list-group-item"><b>Title:</b> {{this.title}}</li>
+            <li class="list-group-item"><b>Description:</b> {{this.description}}</li>
+            <li class="list-group-item"><b>Price:</b> {{this.price}}</li>
+            <li class="list-group-item"><b>Code:</b> {{this.code}}</li>
+            <li class="list-group-item"><b>Stock:</b> {{this.stock}}</li>
+            <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
+            <li class="list-group-item"><b>Owner:</b> {{this.owner}}</li>
+            <li class="list-group-item"><b>Thumbnail:</b> {{this.thumbnail}}</li>
+          </ul>
+        </div>
+      </div>
+    {{/each}}
+
+    <div class="col-12 text-center">
+      <nav>
+        <ul class="pagination">
+          {{#if hasPrevPage}}
+            <li class="page-item">
+          {{else}}
+            <li class="page-item disabled">
+          {{/if}}
+          <a class="page-link" href="?limit={{limit}}&page={{prevPage}}&category={{category}}&availability={{availability}}">Previous</a>
+          </li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{page}}</a>
+          </li>
+          {{#if hasNextPage}}
+            <li class="page-item">
+          {{else}}
+            <li class="page-item disabled">
+          {{/if}}
+          <a class="page-link" href="?limit={{limit}}&page={{nextPage}}&category={{category}}&availability={{availability}}">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+</ul>
+<script src='/socket.io/socket.io.js'></script>
+
+<script src='/js/main.js'></script>

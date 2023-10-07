@@ -1,0 +1,123 @@
+<div><br /></div>
+<div class='container'>
+  {{#if profileImageUrl}}
+  <img src="{{profileImageUrl}}" alt="Profile Image" class="profile-image">
+  {{/if}}
+  <h1 id='userId' data-user-id="{{user._id}}" data-user-email="{{user.email}}">Welcome, {{user.first_name}} {{user.last_name}}</h1>
+
+  <p>Don't forget your credentials!</p>
+
+			<ul>
+				<li><b>Name: </b>{{user.first_name}}</li>
+				<li><b>Last Name: </b>{{user.last_name}}</li>
+				<li><b>Email: </b>{{user.email}}</li>
+        <li><b>Age: </b>{{user.age}}</li>
+        <li><b>Role: </b>{{user.role}}</li>
+        <li><b>Last Connection: </b> {{user.last_connection}}</li>
+			</ul>
+
+      <div class='row'>
+        <button
+          id = 'addProductsButton'
+          type='submit'
+          class='btn btn-primary col-12'
+          onclick="addProducts()"
+        >Add Products</button>
+      </div>
+
+      <div><br /></div>
+      <div class='row'>
+        <button
+          id = 'goToCartButton'
+          type='submit'
+          class='btn btn-primary col-12'
+          onclick="goToCart()"
+        >Go to Cart</button>
+      </div>
+
+      <div><br /></div>
+      <form id="changeRoleForm">
+        <input type="text" id="userIdInput" placeholder="Enter User ID" required>
+        <button type="button" onclick="redirectToPremium()">Change Role</button>
+
+      <div><br /></div>
+      </form>
+      {{#if message}}
+        <div class="message">{{message}}</div>
+      {{/if}}
+
+      <div><br /></div>
+      <!-- Add a form to upload a profile image -->
+      <form
+        id="profileImageForm"
+        action="/api/sessions/uploadProfileImage/{{user._id}}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="profileImage" accept="image/*" required>
+        <button type="submit">Upload Profile Image</button>
+      </form>
+
+      <div><br /></div>
+
+      <div><br /></div>
+      <form action='/api/sessions/logout' method='post'>
+          <div class='row'>
+            <button
+                type='submit'
+                class='btn btn-primary col-12'
+                onclick="logOut()"
+            >Logout</button>
+          </div>
+      </form>
+
+      <div><br /></div>
+
+  <div class='row'>
+    {{#each docs}}
+      <div class="col-md-3">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Title:</b> {{this.title}}</li>
+            <li class="list-group-item"><b>Description:</b> {{this.description}}</li>
+            <li class="list-group-item"><b>Price:</b> {{this.price}}</li>
+            <li class="list-group-item"><b>Code:</b> {{this.code}}</li>
+            <li class="list-group-item"><b>Stock:</b> {{this.stock}}</li>
+            <li class="list-group-item"><b>Category:</b> {{this.category}}</li>
+            <li class="list-group-item"><b>Thumbnail:</b> {{this.thumbnail}}</li>
+          </ul>
+            <div class="card-body">
+              <button id= "addToCartBtn" class="btn btn-primary addToCartBtn" data-product-id="{{this._id}}">Add to Cart</button>
+            </div>
+        </div>
+      </div>
+    {{/each}}
+
+    <div class="col-12 text-center">
+      <nav>
+        <ul class="pagination">
+          {{#if hasPrevPage}}
+            <li class="page-item">
+          {{else}}
+            <li class="page-item disabled">
+          {{/if}}
+          <a class="page-link" href="?limit={{limit}}&page={{prevPage}}&category={{category}}&availability={{availability}}">Previous</a>
+          </li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">{{page}}</a>
+          </li>
+          {{#if hasNextPage}}
+            <li class="page-item">
+          {{else}}
+            <li class="page-item disabled">
+          {{/if}}
+          <a class="page-link" href="?limit={{limit}}&page={{nextPage}}&category={{category}}&availability={{availability}}">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<script src='/socket.io/socket.io.js'></script>
+
+<script src='/js/main.js'></script>

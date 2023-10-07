@@ -1,0 +1,40 @@
+<h1>Change User Role</h1>
+{{#if errorMessage}}
+  <div class="error-message">{{errorMessage}}</div>
+{{/if}}
+<form id="changeRoleForm" method="POST" action="/api/sessions/updateUserRole">
+  <input type="hidden" name="userId" value="{{userId}}">
+  <label for="newRole">Select New Role:</label>
+  <select name="newRole" id="newRole">
+    <option value="user">User</option>
+    <option value="premium">Premium</option>
+  </select>
+  <button type="submit">Change Role</button>
+</form>
+<form
+  id="uploadDocumentForm"
+  method="POST"
+  action="/api/sessions/{{userId}}/documents"
+  enctype="multipart/form-data"
+>
+  <label for="documentType">Select Document Type:</label>
+  <select name="documentType" id="documentType">
+    <option value="ID">ID</option>
+    <option value="Proof of address">Proof of Address</option>
+    <option value="Proof of statement">Proof of Statement</option>
+  </select>
+  <label for="document">Upload Document:</label>
+  <input type="file" name="document" id="document">
+  <button type="submit">Upload Document</button>
+</form>
+
+<button class="delete-user" data-user-id="{{userId}}">Delete User</button>
+
+<button
+			type='submit'
+			class='btn btn-primary col-12'
+			onclick="goToProducts()"
+		>Return to products</button>
+
+
+<script src='/js/deleteButton.js'></script>

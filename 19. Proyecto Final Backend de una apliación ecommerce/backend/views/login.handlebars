@@ -1,0 +1,58 @@
+<section class='container'>
+	<div class='row bg-light login-section'>
+		<div class='col-4'></div>
+		<div class='col-8' style='padding: 50px 20px;'>
+			<h1>Sign in</h1>
+			<form action='/api/sessions/auth' method='post'>
+				<div class='row'>
+					<div class='col-12'>
+						<input
+							type='email'
+							class='form-control'
+							placeholder='Email'
+							aria-label='Email'
+							name='email'
+						/>
+					</div>
+					<div class='col-12'>
+						<input
+							type='password'
+							class='form-control'
+							placeholder='Password'
+							aria-label='Password'
+							name='password'
+						/>
+					</div>
+
+					<button
+						type='submit'
+						class='btn btn-primary col-12'
+					>Sign in</button>
+
+					<a
+						href='/api/sessions/github'
+						type='submit'
+						class='btn btn-primary col-12'
+						style='background: #333; color: #fff; margin-top: 10px'
+					>Sign in with GitHub</a>
+				</div>
+			</form>
+			<form action='/api/sessions/signup' method='post'>
+				<div class='row'>
+					<button
+						type='submit'
+						class='btn btn-primary col-12'
+					>Sign up</button>
+				</div>
+			</form>
+			<form action="/api/sessions/forgotPassword" method='get'>
+				<div class='row'>
+					<button
+						type='submit'
+						class='btn btn-primary col-12'
+					>Forgot Password?</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
